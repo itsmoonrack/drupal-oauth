@@ -1,0 +1,59 @@
+<?php
+// $Id$
+/**
+ * @file
+ * Enables the oauth capabilities.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function oauth_menu() {
+  $items['user/%user/identities'] = array(
+    'title'           => 'External identities',
+    'page callback'		=> 'oauth_user_identities',
+    'page arguments'	=> array(1),
+    'access callback' => 'user_edit_access',
+    'access arguments'=> array(1),
+    'type'						=> MENU_LOCAL_TASK,
+    'file'						=> 'oauth.pages.inc',
+  );
+  $items['user/%user/%/delete'] = array(
+    'title' => 'Delete Twitter',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('oauth_user_delete_form', 1, 2),
+    'access callback' => 'user_edit_access',
+    'access arguments' => array(1),
+    'file' => 'oauth.pages.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Function providing basic access checking. You can extends this function by
+ * including the return value with added checking specific to your provider.
+ */
+function oauth_access_callback($module) {
+  return isset($_GET['action']) && $_SESSION[$module]['random'] == $_GET['action'];
+}
+
+/**
+ * Returns information about the oauth implementations modules on the system.
+ *
+ * @return array
+ *  An associative array keyed after module name containing information about
+ *  the oauth implementations.
+ */
+function oauth_get_implementations() {
+  static $oauths;
+
+  if (!$oauths) {
+    $oauths = array();
+    foreach (module_implements('oauth_info') as $module) {
+      $oauths[$module] = call_user_func($module . '_oauth_info');
+    }
+  }
+
+  return $oauths;
+}

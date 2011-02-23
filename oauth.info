@@ -1,0 +1,8 @@
+; $Id$
+name = OAuth
+description = Provides OAuth functionality
+package = We Design
+version = 7.x-dev
+core = 7.x
+
+files[] = oauth.inc

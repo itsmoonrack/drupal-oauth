@@ -1,0 +1,136 @@
+<?php
+// $Id$
+/**
+ * @file
+ * Install, update and uninstall functions for the oauth module.
+ */
+
+/**
+ * Implements hook_install().
+ *
+ * There is no install function. This is the responsability of the module
+ * implementing OAuth to instanciate the schema.
+ *
+ * @see oauth_base_schema()
+ */
+function oauth_install() {
+
+}
+
+/**
+ * Implements hook_uninstall().
+ *
+ * There is no uninstall function. This is the responsability of the module
+ * implementing OAuth to remove the schema.
+ *
+ * @see oauth_base_schema()
+ */
+function oauth_uninstall() {
+
+}
+
+/**
+ * Implements hook_requirements().
+ *
+ * Check for OAuth php extension.
+ */
+function oauth_requirements($phase) {
+  $requirements = array();
+
+  // Ensure translations don't break at install time
+  $t = get_t();
+
+  $pecl_oauth = 'http://pecl.php.net/package/oauth';
+  $version_ok = '1.0-dev';
+  $version_min = '0.99.9';
+  $value = $version = phpversion('oauth');
+
+  // Check if OAuth extension is loaded.
+  if (extension_loaded('oauth') && version_compare($version, $version_ok, '>=')) {
+    $description = '';
+    $severity = REQUIREMENT_OK;
+  }
+  elseif (extension_loaded('oauth')) {
+    if (version_compare($version, $version_min, '>=')) {
+      $description = $t('You are strongly encouraged to update to v!version or above.', array('!version' => $version_ok));
+      $severity = REQUIREMENT_WARNING;
+    }
+    else {
+      $description = $t('You need to upgrade to v!version or above.', array('!version' => $version_min));
+      $severity = REQUIREMENT_ERROR;
+    }
+  }
+  else {
+    $value = $t('Not enabled');
+    $description = $t('Your server does not support OAuth. Install the <a href="!pecl_oauth">PECL OAuth</a> extension v!version or above.', array('!pecl_oauth' => $pecl_oauth, '!version' => $version));
+    $severity = REQUIREMENT_ERROR;
+  }
+
+  $requirements['oauth'] = array(
+    'title'       => $t('OAuth'),
+    'value'       => $value,
+    'severity'    => $severity,
+    'description' => $description,
+  );
+
+  return $requirements;
+}
+
+/**
+ * Helper for hook_schema().
+ *
+ * @param $app_name
+ *   Application name for the module using oauth.
+ * @param $length
+ *   Length of token and secret, correctly dimensioned for the service being
+ *   used.
+ */
+function oauth_base_schema($module, $length_token, $length_secret = NULL) {
+  $schema = array();
+
+  if (!isset($length_secret)) {
+    $length_secret = $length_token;
+  }
+
+  $schema[$module . '_token'] = array(
+    'description' => 'Tokens for request and services accesses.',
+    'fields'      => array(
+      'uid'                => array(
+        'type'        => 'int',
+        'not null'    => TRUE,
+        'default'     => 0,
+        'description' => "User's {users}.uid.",
+      ),
+      'oauth_token'        => array(
+        'type'        => 'char',
+        'length'      => $length_token,
+        'not null'    => TRUE,
+        'default' => '',
+        'description' => 'Tokens for request and services accesses.',
+      ),
+      'oauth_token_secret' => array(
+        'type'        => 'char',
+        'length'      => $length_secret,
+        'not null'    => TRUE,
+        'default' => '',
+        'description' => 'The token_secret for oauth-based access.',
+      ),
+    ),
+    'primary key' => array('uid'),
+    'foreign keys' => array(
+      'user' => array(
+        'table' => 'users',
+        'columns' => array('uid' => 'uid'),
+      ),
+    ),
+  );
+
+  return $schema;
+}
+
+function oauth_cleanup($module) {
+  // Clean up authmap.
+  db_delete('authmap')
+    ->condition('module', $module)
+    ->execute();
+}
