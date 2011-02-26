@@ -116,23 +116,23 @@ class OAuthAdapter extends OAuth implements DrupalOAuthClient {
   private $mModule;
   private static $sInstance = array();
 
-  public static function construct($module, $signature_method = NULL, $auth_type = NULL) {
+  public function __construct($module, $signature_method = NULL, $auth_type = NULL) {
     $consumer_key = variable_get($module . '_consumer_key', '');
     $consumer_secret = variable_get($module . '_consumer_secret', '');
-    $oauth = new OAuthAdapter($consumer_key, $consumer_secret, $signature_method, $auth_type);
-    $oauth->mModule = $module;
+    parent::construct($consumer_key, $consumer_secret, $signature_method, $auth_type);
+    $this->mModule = $module;
 
     // If the user is not anonymous (can happen with cron auto-sync tasks).
     if ($GLOBALS['user']->uid != 0) {
-      $oauth->setCaller($GLOBALS['user']->uid);
+      $this->setCaller($GLOBALS['user']->uid);
     }
 
-    return OAuthAdapter::$sInstance[$module] = $oauth;
+    OAuthAdapter::$sInstance[$module] = $oauth;
   }
 
   public static function instance($module) {
     if (!isset(OAuthAdapter::$sInstance[$module])) {
-      OAuthAdapter::$sInstance[$module] = OAuthAdapter::construct($module);
+      OAuthAdapter::$sInstance[$module] = new OAuthAdapter($module);
     }
     return OAuthAdapter::$sInstance[$module];
   }
