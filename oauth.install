@@ -41,28 +41,23 @@ function oauth_requirements($phase) {
   $t = get_t();
 
   $pecl_oauth = 'http://pecl.php.net/package/oauth';
-  $version_ok = '1.0-dev';
-  $version_min = '0.99.9';
+  $version_min = '1.1.0';
   $value = $version = phpversion('oauth');
 
   // Check if OAuth extension is loaded.
-  if (extension_loaded('oauth') && version_compare($version, $version_ok, '>=')) {
-    $description = '';
-    $severity = REQUIREMENT_OK;
-  }
-  elseif (extension_loaded('oauth')) {
+  if (extension_loaded('oauth')) {
     if (version_compare($version, $version_min, '>=')) {
-      $description = $t('You are strongly encouraged to update to v!version or above.', array('!version' => $version_ok));
-      $severity = REQUIREMENT_WARNING;
+      $description = '';
+      $severity = REQUIREMENT_OK;
     }
     else {
-      $description = $t('You need to upgrade to v!version or above.', array('!version' => $version_min));
+      $description = $t('Oauth version (!old_version) was detected. You need to upgrade to v!version or above.', array('!old_version' => $version, '!version' => $version_min));
       $severity = REQUIREMENT_ERROR;
     }
   }
   else {
     $value = $t('Not enabled');
-    $description = $t('Your server does not support OAuth. Install the <a href="!pecl_oauth">PECL OAuth</a> extension v!version or above.', array('!pecl_oauth' => $pecl_oauth, '!version' => $version));
+    $description = $t('Your server does not support OAuth. Install the <a href="!pecl_oauth">PECL OAuth</a> extension v!version or above.', array('!pecl_oauth' => $pecl_oauth, '!version' => $version_min));
     $severity = REQUIREMENT_ERROR;
   }
 
