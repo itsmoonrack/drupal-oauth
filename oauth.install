@@ -41,7 +41,7 @@ function oauth_requirements($phase) {
   $t = get_t();
 
   $pecl_oauth = 'http://pecl.php.net/package/oauth';
-  $version_min = '1.1.0';
+  $version_min = '1.0-dev';
   $value = $version = phpversion('oauth');
 
   // Check if OAuth extension is loaded.
