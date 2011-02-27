@@ -1,2 +1,19 @@
 <?php
-//ok
+// $Id$
+
+/**
+ * @file: Base class for OAuth tests.
+ */
+
+/**
+ * Base class for OAuth tests.
+ */
+abstract class OAuthWebTestCase extends DrupalWebTestCase {
+  function setUp() {
+    parent::setUp('oauth', 'oauth_test');
+    module_load_include('inc', 'oauth');
+
+    global $linkedin_oauth;
+    $linkedin_oauth = new OAuthStub();
+  }
+}
