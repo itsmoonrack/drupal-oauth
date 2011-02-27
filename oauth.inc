@@ -202,15 +202,6 @@ interface DrupalOAuthClient {
   static function construct($module, $signature_method = NULL, $auth_type = NULL);
 
   /**
-   * Ensure a class only has one instance, and provide a global point of access
-   * to it.
-   *
-   * @param $module
-   *	 The application for which the object is returned.
-   */
-  static function instance($module);
-
-  /**
    * Set the user associated Access Token and Secret Token for this DrupalOAuth
    * instance. It is the responsibility of the caller to check if token exists.
    *
