@@ -105,6 +105,20 @@ function oauth_user_add($identity, $module, $access, $uid = NULL) {
 }
 
 /**
+ * Menu callback; Call a hook in the module specified and inject an OAuth object.
+ * 
+ * These special functions need to be declared in a file called MODULE.auth.inc.
+ */
+function oauth_delegate($module, $hook) {
+  module_load_include('inc', $module, "$module.auth");
+  
+  $func = $module . '_' . $hook;
+  $oauth = OAuthAdapter::construct($module);
+  
+  $func($oauth);
+}
+
+/**
  * A class adapter implementing DrupalOAuth. Since PHP doesn't support private
  * inheritence for implementation, we are using normal inheritence.
  * Class-member attribute Module is designed to help loading consumer
