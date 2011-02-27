@@ -14,10 +14,10 @@ function oauth_user_identities($account) {
   $rows = array();
 
   $result = db_select('authmap')
-  ->fields('authmap')
-  ->condition('uid', $account->uid)
-  ->execute()
-  ->fetchAllAssoc('module');
+    ->fields('authmap')
+    ->condition('uid', $account->uid)
+    ->execute()
+    ->fetchAllAssoc('module');
 
   $oauth_modules = oauth_get_implementations();
 

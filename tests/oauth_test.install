@@ -1,0 +1,29 @@
+<?php
+// $Id$
+/**
+ * @file
+ * Install, update and uninstall functions for the oauth_test module.
+ */
+
+module_load_include('install', 'oauth');
+
+/**
+ * Implements hook_install().
+ */
+function oauth_test_install() {
+  oauth_register_key('oauth_test', 'dummy-consumer-key', 'dummy-consumer-secret');
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function oauth_test_uninstall() {
+  oauth_cleanup('oauth_test');
+}
+
+/**
+ * Implements hook_schema().
+ */
+function oauth_test_schema() {
+  return oauth_base_schema('oauth_test', 60, 60);
+}

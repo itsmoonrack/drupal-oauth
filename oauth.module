@@ -9,6 +9,8 @@
  * Implements hook_menu().
  */
 function oauth_menu() {
+  $items = array();
+
   $items['user/%user/identities'] = array(
     'title'           => 'External identities',
     'page callback'		=> 'oauth_user_identities',
@@ -26,6 +28,22 @@ function oauth_menu() {
     'access arguments' => array(1),
     'file' => 'oauth.pages.inc',
   );
+  $items['%/authenticate'] = array(
+    'page callback' => 'oauth_delegate',
+  	'page arguments' => array(0, 1),
+    'access callback' => 'oauth_implements',
+    'access arguments' => array(0),
+    'type' => MENU_CALLBACK,
+    'file' => 'oauth.inc',
+  );
+  $items['%/oauth_callback'] = array(
+  	'page callback' => 'oauth_delegate',
+    'page arguments' => array(0, 1),
+    'access callback' => 'oauth_access_callback',
+    'access arguments' => array(0),
+    'type' => MENU_CALLBACK,
+    'file' => 'oauth.inc',
+  );
 
   return $items;
 }
@@ -36,6 +54,15 @@ function oauth_menu() {
  */
 function oauth_access_callback($module) {
   return isset($_GET['action']) && $_SESSION[$module]['random'] == $_GET['action'];
+}
+
+/**
+ * Check if a module implementing oauth exists.
+ */
+function oauth_implements($module) {
+  $ok = function_exists($module . '_oauth_info');
+  $debug = true;
+  return function_exists($module . '_oauth_info');
 }
 
 /**
