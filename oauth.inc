@@ -95,7 +95,6 @@ function oauth_user_add($identity, $module, $access, $uid = NULL) {
     $user->uid = $uid;
   }
 
-  $return_value = NULL;
   $fields = array('uid', 'oauth_token', 'oauth_token_secret');
   $values = array($user->uid, $access['oauth_token'], $access['oauth_token_secret']);
 
