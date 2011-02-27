@@ -115,16 +115,18 @@ function oauth_user_add($identity, $module, $access, $uid = NULL) {
 class OAuthAdapter extends OAuth implements DrupalOAuthClient {
   private $mModule;
 
-  public function __construct($module, $signature_method = NULL, $auth_type = NULL) {
+  public static function construct($module, $signature_method = NULL, $auth_type = NULL) {
     $consumer_key = variable_get($module . '_consumer_key', '');
     $consumer_secret = variable_get($module . '_consumer_secret', '');
-    parent::construct($consumer_key, $consumer_secret, $signature_method, $auth_type);
-    $this->mModule = $module;
+    $oauth = new OAuthAdapter($consumer_key, $consumer_secret, $signature_method, $auth_type);
+    $oauth->mModule = $module;
 
     // If the user is not anonymous (can happen with cron auto-sync tasks).
     if ($GLOBALS['user']->uid != 0) {
-      $this->setCaller($GLOBALS['user']->uid);
+      $oauth->setCaller($GLOBALS['user']->uid);
     }
+    
+    return $oauth;
   }
 
   public function setCaller($uid) {
