@@ -127,7 +127,7 @@ class OAuthAdapter extends OAuth implements DrupalOAuthClient {
       $this->setCaller($GLOBALS['user']->uid);
     }
 
-    OAuthAdapter::$sInstance[$module] = $oauth;
+    OAuthAdapter::$sInstance[$module] = $this;
   }
 
   public static function instance($module) {
