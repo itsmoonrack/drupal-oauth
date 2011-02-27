@@ -114,7 +114,6 @@ function oauth_user_add($identity, $module, $access, $uid = NULL) {
  */
 class OAuthAdapter extends OAuth implements DrupalOAuthClient {
   private $mModule;
-  private static $sInstance = array();
 
   public function __construct($module, $signature_method = NULL, $auth_type = NULL) {
     $consumer_key = variable_get($module . '_consumer_key', '');
@@ -126,15 +125,6 @@ class OAuthAdapter extends OAuth implements DrupalOAuthClient {
     if ($GLOBALS['user']->uid != 0) {
       $this->setCaller($GLOBALS['user']->uid);
     }
-
-    OAuthAdapter::$sInstance[$module] = $oauth;
-  }
-
-  public static function instance($module) {
-    if (!isset(OAuthAdapter::$sInstance[$module])) {
-      OAuthAdapter::$sInstance[$module] = new OAuthAdapter($module);
-    }
-    return OAuthAdapter::$sInstance[$module];
   }
 
   public function setCaller($uid) {
