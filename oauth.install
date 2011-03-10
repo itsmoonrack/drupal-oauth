@@ -96,15 +96,15 @@ function oauth_base_schema($module, $length_token, $length_secret = NULL) {
         'default'     => 0,
         'description' => "User's {users}.uid.",
       ),
-      'oauth_token'        => array(
-        'type'        => 'char',
+      'token'        => array(
+        'type'        => 'varchar',
         'length'      => $length_token,
         'not null'    => TRUE,
         'default' => '',
         'description' => 'Tokens for request and services accesses.',
       ),
-      'oauth_token_secret' => array(
-        'type'        => 'char',
+      'secret' => array(
+        'type'        => 'varchar',
         'length'      => $length_secret,
         'not null'    => TRUE,
         'default' => '',

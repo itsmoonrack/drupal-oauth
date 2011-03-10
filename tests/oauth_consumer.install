@@ -25,5 +25,5 @@ function oauth_test_uninstall() {
  * Implements hook_schema().
  */
 function oauth_test_schema() {
-  return oauth_base_schema('oauth_test', 60, 60);
+  return oauth_base_schema('oauth_consumer', 60, 60);
 }

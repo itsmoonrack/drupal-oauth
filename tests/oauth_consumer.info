@@ -1,8 +1,8 @@
-name = "OAuth module tests"
+name = "OAuth Consumer"
 description = "Support module for OAuth based module testing."
 package = Testing
 version = VERSION
 core = 7.x
 hidden = TRUE
 
-files[] = oauth_test.module
+files[] = oauth_consumer.module
