@@ -28,19 +28,23 @@ function oauth_menu() {
     'access arguments' => array(1),
     'file' => 'oauth.pages.inc',
   );
-  $items['%/authenticate'] = array(
+  // TODO: put back %/authenticate when http://drupal.org/node/1087940
+  //       get fixed.
+  $items['oauth/%/authenticate'] = array(
     'page callback' => 'oauth_delegate',
-  	'page arguments' => array(0, 1),
+  	'page arguments' => array(1, 2),
     'access callback' => 'oauth_implements',
-    'access arguments' => array(0),
+    'access arguments' => array(1),
     'type' => MENU_CALLBACK,
     'file' => 'oauth.inc',
   );
-  $items['%/oauth_callback'] = array(
+  // TODO: put back %/oauth_callback when http://drupal.org/node/1087940
+  //       get fixed.
+  $items['oauth/%/oauth_callback'] = array(
   	'page callback' => 'oauth_delegate',
-    'page arguments' => array(0, 1),
+    'page arguments' => array(1, 2),
     'access callback' => 'oauth_access_callback',
-    'access arguments' => array(0),
+    'access arguments' => array(1),
     'type' => MENU_CALLBACK,
     'file' => 'oauth.inc',
   );

@@ -178,7 +178,9 @@ class OAuthAdapter extends OAuth implements DrupalOAuthClient {
     // Setting up variables
     $random = md5(rand());
     if (is_null($callback)) {
-      $callback = $this->mModule . '/oauth_callback';
+      // TODO: put back module/oauth_callback when http://drupal.org/node/1087940
+      // get fixed.
+      $callback = 'oauth/' . $this->mModule . '/oauth_callback';
     }
     $callback = url($callback, array('query' => array('action' => $random), 'absolute' => TRUE));
 
@@ -323,7 +325,10 @@ interface DrupalOAuthClient {
    * @param $request_url
    *   URL to the request token API.
    * @param $callback
-   *   Optinal OAuth callback URL. Default to '/module/oauth_callback'
+   *   Optinal OAuth callback URL. Default to 'oauth/module/oauth_callback'
+   *   
+   *   TODO: put back module/oauth_callback when http://drupal.org/node/1087940
+   *   get fixed.
    *
    * @return
    *   Returns TRUE if a parameter is correctly set, otherwise FALSE (e.g., if
