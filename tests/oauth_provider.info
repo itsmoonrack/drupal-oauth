@@ -1,0 +1,6 @@
+name = "OAuth Provider"
+description = "Support module for OAuth based module testing."
+package = Testing
+version = VERSION
+core = 7.x
+hidden = TRUE
