@@ -95,7 +95,7 @@ function oauth_user_add($identity, $module, $access, $uid = NULL) {
     $user->uid = $uid;
   }
 
-  $fields = array('uid', 'oauth_token', 'oauth_token_secret');
+  $fields = array('uid', 'token', 'secret');
   $values = array($user->uid, $access['oauth_token'], $access['oauth_token_secret']);
 
   user_set_authmaps($user, array("authmap_$module" => "$identity@$module"));
@@ -150,7 +150,7 @@ class OAuthAdapter extends OAuth implements DrupalOAuthClient {
       ->fetchObject();
     // The first time, users don't have a token.
     if ($access) {
-      parent::setToken($access->oauth_token, $access->oauth_token_secret);
+      parent::setToken($access->token, $access->secret);
     }
   }
 
