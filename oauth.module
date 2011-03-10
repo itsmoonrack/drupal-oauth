@@ -64,8 +64,6 @@ function oauth_access_callback($module) {
  * Check if a module implementing oauth exists.
  */
 function oauth_implements($module) {
-  $ok = function_exists($module . '_oauth_info');
-  $debug = true;
   return function_exists($module . '_oauth_info');
 }
 

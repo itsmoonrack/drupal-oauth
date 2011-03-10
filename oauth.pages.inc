@@ -28,7 +28,8 @@ function oauth_user_identities($account) {
     }
     else {
       $identity->authname = $module['name'];
-      $operations = l(t('Add'), "$key/authenticate");
+      // TODO: put back %/oauth_callback when http://drupal.org/node/1087940 get fixed.
+      $operations = l(t('Add'), "oauth/$key/authenticate");
     }
     // TODO: Better display (Username) and Logo (Twitter, Facebook...).
     $rows[] = array(check_plain($identity->authname), $operations);

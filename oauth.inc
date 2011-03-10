@@ -148,7 +148,10 @@ class OAuthAdapter extends OAuth implements DrupalOAuthClient {
       ->condition('uid', $uid)
       ->execute()
       ->fetchObject();
-    parent::setToken($access->oauth_token, $access->oauth_token_secret);
+    // The first time, users don't have a token.
+    if ($access) {
+      parent::setToken($access->oauth_token, $access->oauth_token_secret);
+    }
   }
 
   public function getAccessToken($access_url, $auth_session_handle = NULL) {
